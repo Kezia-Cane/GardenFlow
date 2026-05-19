@@ -55,3 +55,4 @@ This was built as a 48-hour prototype for a Vibe Coder / Prompt Engineer trial. 
 - Add AI-generated insights
 - Add exportable reports
 - Add thumbnail analytics
+# GardenFlow
