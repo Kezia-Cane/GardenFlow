@@ -17,6 +17,31 @@ import {
 
 const funnelColors = ["#4cd7f6", "#4edea3", "#10b981", "#d0bcff", "#b090ff"];
 
+function FunnelTooltip({
+  active,
+  payload,
+}: {
+  active?: boolean;
+  payload?: Array<{ payload?: { stage?: string; value?: number } }>;
+}) {
+  if (!active || !payload?.length) {
+    return null;
+  }
+
+  const item = payload[0]?.payload;
+
+  if (!item?.stage) {
+    return null;
+  }
+
+  return (
+    <div className="rounded-lg border border-white/10 bg-surface-container/95 px-3 py-2 shadow-panel backdrop-blur-md">
+      <p className="text-xs font-semibold uppercase tracking-[0.12em] text-on-muted">{item.stage}</p>
+      <p className="mt-1 text-sm font-semibold text-on-surface">{formatNumber(item.value ?? 0)}</p>
+    </div>
+  );
+}
+
 export function CombinedOverview() {
   const youtubeTotals = getYouTubeTotals(youtubeChannels);
   const storeTotals = getStoreTotals(webStores);
@@ -77,7 +102,7 @@ export function CombinedOverview() {
         <ChartCard title="Content to Commerce Funnel" subtitle="Views to clicks, visits, purchases, and revenue">
           <ResponsiveContainer width="100%" height="100%">
             <FunnelChart>
-              <Tooltip contentStyle={{ background: "rgba(17,24,39,0.92)", border: "1px solid rgba(255,255,255,0.12)", borderRadius: 12 }} />
+              <Tooltip content={<FunnelTooltip />} cursor={false} />
               <Funnel dataKey="value" data={funnel} isAnimationActive>
                 <LabelList position="right" fill="#dde4dd" stroke="none" dataKey="stage" />
                 {funnel.map((_, index) => <Cell key={index} fill={funnelColors[index]} />)}
